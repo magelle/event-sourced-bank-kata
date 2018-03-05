@@ -1,11 +1,6 @@
 class Account(val events: List<AccountEvent>) {
 
-    private val projection: AccountProjection
-
-    init {
-        projection = events.fold(AccountProjection(), { projection, event -> event.applyOn(projection) } )
-    }
-
+    private val projection: AccountProjection = createAccountProjection(events)
     fun deposit(amount: Int) = Account(events + decisionOnDeposit(amount))
     fun withdraw(amount: Int) = Account(events + decisionOnWithdrawal(amount, projection))
 }
@@ -49,6 +44,9 @@ data class WithdrawalMade(val amount: Int): AccountEvent {
 data class WithdrawalRefused(val amount: Int, val cause: String): AccountEvent {
     override fun applyOn(proj: AccountProjection) = proj.apply(this)
 }
+
+private fun createAccountProjection(events: List<AccountEvent>) =
+        events.fold(AccountProjection(), { projection, event -> event.applyOn(projection) })
 
 data class AccountProjection(val balance: Int = 0) {
     fun apply(event: AccountCreated) = AccountProjection(0)
