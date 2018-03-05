@@ -1,9 +1,8 @@
-package usecases
+package infra.query
 
 import domain.AccountCreated
 import domain.DepositMade
 import domain.WithdrawalMade
-import infra.query.GetBalance
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -18,7 +17,7 @@ class GetBalanceShould {
     }
 
     @Test
-    fun `summ deposit and withdrawal`() {
+    fun `sum deposit and withdrawal`() {
         val getBalance = GetBalance(accountId, { _ -> listOf(
                 AccountCreated(accountId),
                 DepositMade(accountId, 100),

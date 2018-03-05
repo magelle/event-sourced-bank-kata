@@ -1,6 +1,5 @@
-package usecases
+package infra.command
 
-import infra.command.CreateAccount
 import domain.AccountCreated
 import infra.AccountEventStore
 import kotlin.test.Test
