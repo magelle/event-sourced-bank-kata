@@ -12,17 +12,23 @@ class GetBalanceShould {
 
     @Test
     fun `says zero when account is just create`() {
-        val getBalance = GetBalance(accountId, { _ -> listOf(AccountCreated(accountId)) } )
-        assertEquals(0, getBalance.get())
+        val events = { _: Int -> listOf(AccountCreated(accountId)) }
+        val getBalance = GetBalance(accountId)
+        val getBalanceAnswer = GetBalanceAnswer(events)
+        val balance = getBalanceAnswer.answer(getBalance)
+        assertEquals(0, balance.balance)
     }
 
     @Test
     fun `sum deposit and withdrawal`() {
-        val getBalance = GetBalance(accountId, { _ -> listOf(
+        val events = { _: Int -> listOf(
                 AccountCreated(accountId),
                 DepositMade(accountId, 100),
-                WithdrawalMade(accountId, 50)) } )
-        assertEquals(50, getBalance.get())
+                WithdrawalMade(accountId, 50)) }
+        val getBalance = GetBalance(accountId)
+        val getBalanceAnswer = GetBalanceAnswer(events)
+        val balance = getBalanceAnswer.answer(getBalance)
+        assertEquals(50, balance.balance)
     }
 
 }
