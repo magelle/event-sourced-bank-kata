@@ -8,21 +8,25 @@ import org.junit.Test
 import kotlin.test.BeforeTest
 import kotlin.test.assertEquals
 
-class MakeAWithdrawalShould {
+class MakeAWithdrawalHandlerShould {
 
     private val accountEventStore = AccountEventStore()
-
     private val accountId = 1
+
+    private lateinit var createAccountHandler: CreateAccountHandler
 
     @BeforeTest
     fun beforeTest() {
-        CreateAccount({ accountId }, accountEventStore).execute()
-        MakeADeposit(accountId, 300, accountEventStore).execute()
+        createAccountHandler = CreateAccountHandler({ accountId }, accountEventStore)
+        createAccountHandler.handle(CreateAccount())
+        val makeAWithdrawalHandler = MakeADepositHandler(accountEventStore)
+        makeAWithdrawalHandler.handle(MakeADeposit(accountId, 300))
     }
 
     @Test
     fun `create an account`() {
-        MakeAWithdrawal(accountId, 100, accountEventStore).execute()
+        val makeAWithdrawalHandler = MakeAWithdrawalHandler(accountEventStore)
+        makeAWithdrawalHandler.handle(MakeAWithdrawal(accountId, 100))
         assertEquals(
                 listOf(AccountCreated(accountId), DepositMade(accountId, 300), WithdrawalMade(accountId, 100)),
                 accountEventStore.eventsOf(accountId)

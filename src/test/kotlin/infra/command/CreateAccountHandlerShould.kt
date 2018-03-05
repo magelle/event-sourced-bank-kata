@@ -5,15 +5,15 @@ import infra.AccountEventStore
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-class CreateAccountShould {
+class CreateAccountHandlerShould {
 
     private val accountId = 1
 
     @Test
     fun `create an account`() {
         val accountEventStore = AccountEventStore()
-        val createAccount = CreateAccount({ accountId }, accountEventStore)
-        createAccount.execute()
+        val createAccountHandler = CreateAccountHandler({ accountId }, accountEventStore)
+        createAccountHandler.handle(CreateAccount())
         assertEquals(listOf(AccountCreated(accountId)), accountEventStore.eventsOf(accountId))
     }
 
