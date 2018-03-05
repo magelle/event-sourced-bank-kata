@@ -15,7 +15,7 @@ class MakeADepositShould {
 
     @BeforeTest
     fun beforeTest() {
-        val createAccount = CreateAccount(accountEventStore, { accountId })
+        val createAccount = CreateAccount({ accountId }, accountEventStore)
         createAccount.execute()
     }
 

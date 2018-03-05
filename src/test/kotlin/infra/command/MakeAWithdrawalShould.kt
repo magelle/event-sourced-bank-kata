@@ -16,7 +16,7 @@ class MakeAWithdrawalShould {
 
     @BeforeTest
     fun beforeTest() {
-        CreateAccount(accountEventStore, { accountId }).execute()
+        CreateAccount({ accountId }, accountEventStore).execute()
         MakeADeposit(accountId, 300, accountEventStore).execute()
     }
 

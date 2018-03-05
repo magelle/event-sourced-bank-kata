@@ -12,7 +12,7 @@ class CreateAccountShould {
     @Test
     fun `create an account`() {
         val accountEventStore = AccountEventStore()
-        val createAccount = CreateAccount(accountEventStore, { accountId })
+        val createAccount = CreateAccount({ accountId }, accountEventStore)
         createAccount.execute()
         assertEquals(listOf(AccountCreated(accountId)), accountEventStore.eventsOf(accountId))
     }

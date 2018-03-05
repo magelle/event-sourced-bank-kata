@@ -17,7 +17,7 @@ class AccountScenario {
     fun `return the right balance`() {
         val getBalance = GetBalance(accountId, { id -> accountEventStore.eventsOf(id) })
 
-        CreateAccount(accountEventStore, idGenerator).execute()
+        CreateAccount(idGenerator, accountEventStore).execute()
         assertEquals(0, getBalance.get())
 
         MakeADeposit(accountId, 250, accountEventStore).execute()
